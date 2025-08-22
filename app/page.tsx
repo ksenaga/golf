@@ -1,8 +1,23 @@
+"use client";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Star, MapPin, Users, Trophy, Calendar, Phone } from "lucide-react"
 
 export default function GolfMembershipLP() {
+    const images = [
+    "/golf.jpg",
+    "/golf.png",
+    "/golf2.jpg",
+  ];
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % images.length);
+    }, 5000); // 5秒ごとに切り替え
+    return () => clearInterval(interval);
+  }, [images.length]);
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -27,27 +42,33 @@ export default function GolfMembershipLP() {
       </header>
 
       {/* Hero Section */}
-      <section className="relative h-[600px] bg-gradient-to-r from-primary/90 to-primary/70 flex items-center justify-center text-center text-white">
+    <section className="relative h-[600px] bg-gradient-to-r from-primary/90 to-primary/70 flex items-center justify-center text-center text-white overflow-hidden">
+      {/* 背景スライド */}
+      {images.map((img, index) => (
         <div
-          className="absolute inset-0 bg-cover bg-center opacity-30"
-          style={{
-            backgroundImage: "url('/golf-sunrise-mist.png')",
-          }}
+          key={index}
+          className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out ${
+            index === current ? "opacity-100" : "opacity-0"
+          }`}
+          style={{ backgroundImage: `url(${img})` }}
         />
-        <div className="relative z-10 max-w-4xl mx-auto px-4">
-          <h2 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-            究極のゴルフ体験を
-            <br />
-            <span className="text-accent">あなたに</span>
-          </h2>
-          <p className="text-xl md:text-2xl mb-8 opacity-90">
-            伝統と革新が融合した、日本最高峰のプライベートゴルフクラブ
-          </p>
-          <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground text-lg px-8 py-4">
-            会員資格について詳しく見る
-          </Button>
-        </div>
-      </section>
+      ))}
+
+      {/* テキスト */}
+      <div className="relative z-10 max-w-4xl mx-auto px-4">
+        <h2 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+          究極のゴルフ体験を
+          <br />
+          <span className="text-accent">あなたに</span>
+        </h2>
+        <p className="text-xl md:text-2xl mb-8 opacity-90">
+          伝統と革新が融合した、日本最高峰のプライベートゴルフクラブ
+        </p>
+        <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground text-lg px-8 py-4">
+          会員資格について詳しく見る
+        </Button>
+      </div>
+    </section>
 
       {/* Membership Benefits */}
       <section id="membership" className="py-20 bg-muted/30">
